@@ -2,14 +2,14 @@ pipeline {
     agent {
         docker {
             image 'abhishekf5/maven-abhishek-docker-agent:v1'
-            arg '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
         stage('Checkout') {
             steps {
                 sh 'echo passed' 
-                // git branch: 'main', url: ''
+                git branch: 'master', url: 'https://github.com/AmanPathak-DevOps/Springboot-End-to-End.git'
             }
         }
         stage('Build & Test') {
