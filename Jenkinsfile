@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build & Test') {
             steps {
-                sh 'cd Telegram-Bot-Array-Index-Out-Of-Bound && mvn clean package'
+                sh 'mvn clean package'
             }
         }
         stage('Static Code Analysis') {
@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-                sh 'cd Telegram-Bot-Array-Index-Out-Of-Bound && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+                sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
                 }
             }
         }
