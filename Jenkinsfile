@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Updating Deployment File') {
             environment {
-                GIT_REPO_NAME = "Springboot-End-to-End"
+                GIT_REPO_NAME = "Kube-Deployment"
                 GIT_USER_NAME = "AmanPathak-DevOps"
             }
             steps {
