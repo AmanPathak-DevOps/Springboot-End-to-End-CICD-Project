@@ -44,11 +44,11 @@ pipeline {
         }
         stage('Updating Deployment File') {
             environment {
-                GIT_REPO_NAME = "Kube-Deployment"
+                GIT_REPO_NAME = "Springboot-End-to-End"
                 GIT_USER_NAME = "AmanPathak-DevOps"
             }
             steps {
-                withCredentials([string(credentialsId: 'github', variable: 'github')]) {
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config user.email "aman07pathak@gmail.com"
                         git config user.name "AmanPathak-DevOps"
@@ -56,7 +56,7 @@ pipeline {
                         sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
                         git add deployment.yml
                         git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
-                        git push https://${github}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
                     '''
                 }
             }
