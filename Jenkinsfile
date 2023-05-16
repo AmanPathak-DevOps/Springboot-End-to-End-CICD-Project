@@ -29,18 +29,15 @@ pipeline {
         }
         stage('Upload Code Artifacts') {
             steps {
-                rtUpload (
-                    serverId: 'jfrog-artifactory-server',
-                    spec: ''' {
-                        "files": [
-                            {
-                                "pattern": "target/aiooo-0.0.1-SNAPSHOT.jar
-                                "target": "lib-release-local"
-                            }
-                        ]
-                    }''',
-                    deployerCredentialsId: 'jenkins'
-                )
+                server = Artifactory.server 'frog-artifactory-server'
+                def uploadSpec = """{
+                    "files": [
+                    {
+                    "pattern": "target/*.jar",
+                    "target": "libs-release-local/"
+                    }
+                ]}"""
+                server.upload(uploadSpec)
             }
         }
         stage('Build & Push Docker Image') {
