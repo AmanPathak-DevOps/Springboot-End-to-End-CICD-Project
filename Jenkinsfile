@@ -27,6 +27,22 @@ pipeline {
                 }
             }
         }
+        stage('Upload Code Artifacts') {
+            steps {
+                rtUpload (
+                    serverId: 'jfrog-artifactory-server',
+                    spec: ''' {
+                        "files": [
+                            {
+                                "pattern": "target/aiooo-0.0.1-SNAPSHOT.jar
+                                "target": "lib-release-local"
+                            }
+                        ]
+                    }''',
+                    deployerCredentialsId: 'jenkins'
+                )
+            }
+        }
         stage('Build & Push Docker Image') {
             environment {
                 DOCKER_IMAGE = "avian19/spring-docker:${BUILD_NUMBER}"
