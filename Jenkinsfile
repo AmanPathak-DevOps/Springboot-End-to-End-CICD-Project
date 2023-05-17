@@ -13,12 +13,6 @@ pipeline {
         }
     }
     stages {
-        stage('Checkout') {
-            steps {
-                sh 'echo passed' 
-                git branch: 'master', url: 'https://github.com/AmanPathak-DevOps/Springboot-End-to-End.git'
-            }
-        }
         stage('Build & Test') {
             steps {
                 sh 'mvn clean package'
@@ -67,7 +61,7 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                         dockerImage.push()
                     }
-                    sh 'docker rmi ${DOCKER_IMAGE}'
+                    // sh 'docker rmi ${DOCKER_IMAGE}'
                 }
             }
         }
