@@ -51,6 +51,7 @@ pipeline {
                         sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
                     } else {
                         echo 'Artifact Uploading Job Skipped...'
+                        continue
                     }
                 }
             }
