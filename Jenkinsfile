@@ -31,7 +31,7 @@ pipeline {
             agent {
                 docker {
                     image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.2.0'
-                    resuseNode true
+                    reuseNode true
                 }
             }
             environment {
