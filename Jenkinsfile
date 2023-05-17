@@ -39,7 +39,20 @@ pipeline {
                 ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
             }
             steps {
-                sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
+                script {
+                    def userResponse = input(
+                        id: 'checkboxInput', 
+                        message: 'Wants to Upload Artifacts?',
+                        parameters: [
+                            [$class: 'BooleanParameterDefinition', name: 'Upload Artifact', defaultValue: true]
+                        ]
+                    )
+                    if(userResponse['Upload Artifact']) {
+                        sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
+                    } else {
+                        echo 'Artifact Uploading Job Skipped...'
+                    }
+                }
             }
         }
         stage('Build & Push Docker Image') {
