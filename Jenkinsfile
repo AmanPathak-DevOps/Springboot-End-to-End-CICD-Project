@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 sh 'echo passed' 
-                // git branch: 'master', url: 'https://github.com/AmanPathak-DevOps/Springboot-End-to-End.git'
+                git branch: 'master', url: 'https://github.com/AmanPathak-DevOps/Springboot-End-to-End.git'
             }
         }
         stage('Build & Test') {
