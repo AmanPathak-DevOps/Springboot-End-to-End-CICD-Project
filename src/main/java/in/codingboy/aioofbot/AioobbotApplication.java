@@ -39,7 +39,7 @@ public class AioobbotApplication {
                 System.out.println("RS CODE:"+responcode);
                 if (responcode == HttpURLConnection.HTTP_OK)
                 {
-                    System.out.println("Working");
+                    System.out.println("Working Perfect");
                 }
                 else{
                     System.out.println("GET not working");
