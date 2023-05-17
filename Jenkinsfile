@@ -28,16 +28,18 @@ pipeline {
             }
         }
         stage('Upload Code Artifacts') {
+            agent {
+                docker {
+                    image 'releases-docker.jfrog.io/jfrog/jfrog-cli-v2:2.2.0'
+                    resuseNode true
+                }
+            }
+            environment {
+                CI = true
+                ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+            }
             steps {
-                server = Artifactory.server 'frog-artifactory-server'
-                def uploadSpec = """{
-                    "files": [
-                    {
-                    "pattern": "target/*.jar",
-                    "target": "libs-release-local/"
-                    }
-                ]}"""
-                server.upload(uploadSpec)
+                sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
             }
         }
         stage('Build & Push Docker Image') {
