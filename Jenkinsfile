@@ -2,8 +2,8 @@ pipeline {
     parameters {
         booleanParam(
             defaultValue: false,
-            description: 'Do not Run the Upload Artifact Stage?',
-            name: 'SKIP_STAGE'
+            description: 'Upload Artifact?',
+            name: 'YES'
         )
     }
     agent {
@@ -46,9 +46,8 @@ pipeline {
                 ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
             }
             steps {
-                // sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
                 script {
-                    if (params.SKIP_STAGE) {
+                    if (params.YES) {
                         sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
                     } else {
                         return
