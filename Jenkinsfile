@@ -1,4 +1,11 @@
 pipeline {
+    parameters {
+        booleanParam(
+            defaultValue: false,
+            description: 'Do not Run the Upload Artifact Stage?',
+            name: 'SKIP_STAGE'
+        )
+    }
     agent {
         docker {
             image 'abhishekf5/maven-abhishek-docker-agent:v1'
@@ -39,19 +46,12 @@ pipeline {
                 ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
             }
             steps {
+                // sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
                 script {
-                    def userResponse = input(
-                        id: 'checkboxInput', 
-                        message: 'Wants to Upload Artifacts?',
-                        parameters: [
-                            [$class: 'BooleanParameterDefinition', name: 'Upload Artifact', defaultValue: true]
-                        ]
-                    )
-                    if(userResponse['Upload Artifact']) {
+                    if (params.SKIP_STAGE) {
                         sh 'jfrog rt upload --url http://34.228.44.32:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} target/*.jar springboot-web-app/'
                     } else {
-                        echo 'Artifact Uploading Job Skipped...'
-                        continue
+                        return
                     }
                 }
             }
