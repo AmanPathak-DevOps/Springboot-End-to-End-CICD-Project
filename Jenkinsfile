@@ -61,7 +61,7 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                         dockerImage.push()
                     }
-                    // sh 'docker rmi ${DOCKER_IMAGE}'
+                    sh 'docker rmi ${DOCKER_IMAGE}'
                 }
             }
         }
