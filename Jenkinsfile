@@ -93,7 +93,7 @@ pipeline {
                         git config user.name "AmanPathak-DevOps"
                         BUILD_NUMBER=${BUILD_NUMBER}
                         image_version=$(grep "image: avian19/spring-docker:" deployment.yml | awk -F "image: avian19/spring-docker:" '{print $2}')
-                        sed -i "s/$image_version/${BUILD_NUMBER}/g" deployment.yml
+                        sed -i "s/image: avian19\/spring-docker:$image_version/image: avian19\/spring-docker:${BUILD_NUMBER}/g" deployment.yml
                         git add deployment.yml
                         git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
                         git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
