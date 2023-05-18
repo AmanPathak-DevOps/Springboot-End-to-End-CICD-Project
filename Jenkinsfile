@@ -88,7 +88,7 @@ pipeline {
             steps {
                 // Replacing the previous BUILD_NUMBER with NEW_BUILD_NUMBER and pushing the changes to Github
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                    sh '''
+                    sh """
                         git config user.email "aman07pathak@gmail.com"
                         git config user.name "AmanPathak-DevOps"
                         BUILD_NUMBER=${BUILD_NUMBER}
@@ -97,7 +97,7 @@ pipeline {
                         git add deployment.yml
                         git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
                         git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
-                    '''
+                    """
                 }
             }
         }
