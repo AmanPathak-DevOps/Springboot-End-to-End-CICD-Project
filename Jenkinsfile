@@ -88,16 +88,16 @@ pipeline {
             steps {
                 // Replacing the previous BUILD_NUMBER with NEW_BUILD_NUMBER and pushing the changes to Github
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                    sh """
+                    sh '''
                         git config user.email "aman07pathak@gmail.com"
                         git config user.name "AmanPathak-DevOps"
-                        BUILD_NUMBER=\${BUILD_NUMBER}
-                        image_version=\$(grep "image: avian19/spring-docker:" deployment.yml | awk -F "image: avian19/spring-docker:" '{print $2}')
-                        sed -i \"s/image: avian19\\/spring-docker:\${image_version}/image: avian19\\/spring-docker:\${BUILD_NUMBER}/g\" deployment.yml
+                        BUILD_NUMBER=${BUILD_NUMBER}
+                        imageTag=$(grep -oP '(?<=spring-docker:)[^ ]+' deployment.yml)
+                        sed -i "s/spring-docker:${imageTag}/spring-docker:${BUILD_NUMBER}/" deployment.yml
                         git add deployment.yml
                         git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
-                        git push https://\${GITHUB_TOKEN}@github.com/\${GIT_USER_NAME}/\${GIT_REPO_NAME} HEAD:master
-                    """
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
+                    '''
                 }
             }
         }
